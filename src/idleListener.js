@@ -1,38 +1,33 @@
+var IdleListeners = new function(){
+  var self = this;
 
-(function () {
+  window.onmousemove = resetTimer;
+  window.onmousedown = resetTimer;
+  window.onclick = resetTimer;
+  window.onscroll = resetTimer;
+  window.onkeypress = resetTimer;
 
-    this.IdleListenerManager = function () {
-        var self = this;
-        self.idleListeners = [];
-
-        window.onmousemove = resetTimer;
-        window.onmousedown = resetTimer;
-        window.onclick = resetTimer;
-        window.onscroll = resetTimer;
-        window.onkeypress = resetTimer;
-
-        function resetTimer() {
-            for (var i = 0; i < self.idleListeners.length; i++) {
-                self.idleListeners[i].reset();
-            }
-        }
+  function resetTimer() {
+    for (var i = 0; i < self.listeners.length; i++) {
+        self.listeners[i].reset();
     }
+  }
+}
 
-    IdleListenerManager.prototype.add = function (idleFunction, timeoutLength) {     
-        this.idleListeners.push(new IdleListener(idleFunction, timeoutLength));
-    }
+IdleListeners.listeners = [];
 
-    this.IdleListener = function (idleFunction, timeoutLength) {
-        this.idleFunction = idleFunction;
-        this.timeoutLength = timeoutLength;
+IdleListeners.add = function(idleFunction, timeout){
+  this.listeners.push(new IdleListener(idleFunction, timeout));
+}
 
-        this.interval = setInterval(this.idleFunction, this.timeoutLength);
-    }
+var IdleListener = function(idleFunction, timeout){
+  this.idleFunciton = idleFunction;
+  this.timeout = timeout;
 
-    IdleListener.prototype.reset = function () {
-       clearInterval(this.interval);
-       this.interval = setInterval(this.idleFunction, this.timeoutLength);
-    }
-
-}());
-
+  this.reset = function(){
+    if (this.hasOwnProperty('interval')){
+      clearInterval(this.interval);
+    };
+    this.interval = setInterval(this.idleFunciton, this.timeout);
+  }
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IdleListener Example</title>
+  <script src="../src/idleListener.js"></script>
+</head>
+<body>
+  Check Console and then try moving mouse around the screen. Notice that the print statments stop when you move the mouse.
+
+
+  <script>
+    IdleListeners.add(function(){
+      console.log("Idle! - " + Math.round(new Date().getTime()*1000))
+    }, 123)
+  </script>
+</body>
+</html>
